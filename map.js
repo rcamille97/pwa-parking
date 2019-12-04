@@ -3,7 +3,6 @@ var markers = [];
 
 
 function initMap() {
-  //var haightAshbury = {lat: 37.769, lng: -122.446};
 
   map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 42.298326, lng: 9.153767},
@@ -15,12 +14,6 @@ function initMap() {
   map.addListener('click', function(event) {
     addMarker(event.latLng, Date.now());
   });
-
-  /*markers.forEach(marker => {
-    marker.addListener('click', function(event) {
-      console.log("AAAAA")
-    });
-  })*/
   showMarkers()
 }
 
@@ -30,8 +23,7 @@ function showMarker(location,id){
     map: map
   });
   marker.addListener('click', function(event) {
-    console.log("AAAAA")
-    deleteMarker(marker)
+    deleteMarker(marker,id)
   });
   markers.push({"marker" : marker, "id" : id});
 }
@@ -72,23 +64,18 @@ fetch('https://us-central1-pwa-parking.cloudfunctions.net/addLocation',  {
   showMarker(location,id)
 }
 
-function deleteMarker(marker){
-  /*const payload = {
-    'key' : 'id',
-    'value' : marker["id"]
-  }*/
+function deleteMarker(marker, id){
   const payload = {
-    'id': marker["id"]
+    'id': id
   }
   console.log(payload);
 
-  fetch('https://us-central1-pwa-parking.cloudfunctions.net/deleteLocation',  { 
+  fetch('https://us-central1-pwa-parking.cloudfunctions.net/deleteLocation?id=' + id,  { 
       method: 'DELETE', 
       headers: {
         'Content-Type': 'application/json',
       },
-      params : JSON.stringify(payload),
-      body: JSON.stringify(payload)
+      data: JSON.stringify(payload)
     })
     .then(resp => {
         console.log("POST FETCH => ", + resp);

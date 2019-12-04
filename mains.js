@@ -1,7 +1,7 @@
 console.log('hello depuis main');
 const locationsDiv = document.querySelector('#locations');
 
-function loadLocations(locations) {
+/*function loadLocations(locations) {
     fetch('https://us-central1-pwa-parking.cloudfunctions.net/getLocations')
         .then(response => {
             response.json()
@@ -14,24 +14,9 @@ function loadLocations(locations) {
                 });
         })
         .catch(console.error);
-}
+}*/
 
-function convertToDate(timestamp){
-    var date = new Date(timestamp);
-    var months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Aout','Septembre','Octobre','Novembre','Decembre'];
-    var year = date.getFullYear();
-    var month = months[date.getMonth()];
-    var day = date.getDate();
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    if (minutes < 9)
-        minutes = '0' + minutes
-    var seconds = date.getSeconds()
-    if (seconds < 9)
-        seconds = '0' + seconds
-    return day + " " + month + " " + year + " à " + hours + "h" + minutes + "min" + seconds + "sec";
-}
-// 3.2
+
 if(navigator.serviceWorker) {
 	// Enregistrement du service worker
     navigator.serviceWorker
@@ -109,4 +94,4 @@ function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-loadLocations(locations);
+//loadLocations(locations);
