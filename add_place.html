@@ -1,0 +1,32 @@
+<html lang="fr">    
+        <head>    
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+          <meta name="description" content="">
+          <meta name="author" content="">    
+          <title>Mes places de parking</title>    
+          <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> -->
+          <link rel="stylesheet" href="vendors/bootstrap4.min.css">
+          <link href="style.css" rel="stylesheet">
+        </head>    
+        <body id="page-top">
+              <div class="row">
+                  <div class="col"><a href="index.html">accueil</a></div>
+                  <div class="col"><a href="add_place.html">Ajouter place de parking</a></div>
+                  <div class="col"><a href="contact.html">contact</a></div>
+              </div>
+          <h1>Ajouter une place occupée</h1>
+          <h2>Ajouter cette place :</h2>
+          <div id="addform">
+              <form id="add-location-form">
+                  <input type="text" placeholder="Username" id="userName"><br> 
+                  <input type="text" placeholder="longitude" id="longitude"><br>
+                  <input type="text" placeholder="latitude" id="latitude"><br>                   
+                  <button type="submit">ajouter</button>
+              </form>
+          </div>
+          <script src="idb/database.js"></script>
+          <script src="idb/idb.js"></script>
+          <script src="add_place.js"></script>
+        </body>
+  </html>
