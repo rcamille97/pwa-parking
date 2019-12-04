@@ -1,6 +1,8 @@
 var map;
 var markers = [];
 
+var currentUser = firebase.auth().currentUser;
+//get current user
 
 function initMap() {
 
@@ -14,23 +16,36 @@ function initMap() {
   map.addListener('click', function(event) {
     addMarker(event.latLng, Date.now());
   });
+  console.log(currentUser)
   showMarkers()
 }
 
-function showMarker(location,id){
+function showMarker(location,id, user){
+  var infowindow = new google.maps.InfoWindow({
+    content: user + " s'est garé ici à " + id
+  });
   var marker = new google.maps.Marker({
     position: location,
+    icon: 'images/multiplo.png',
     map: map
   });
   marker.addListener('click', function(event) {
-    deleteMarker(marker,id)
+    if (currentUser != null) {
+      userId = currentUser.providerId;
+      if (userId != user){
+        infowindow.open(map, marker);
+      }else{
+        deleteMarker(marker)
+      }
+    }
   });
-  markers.push({"marker" : marker, "id" : id});
+  markers.push({"marker" : marker, "id" : id, "userId" : user});
 }
 // Adds a marker to the map and push to the array.
 function addMarker(location,id) {
   const payload = {
     id: parseInt(id),
+    userId : currentUser.providerId,
     userName: "test",
     latitude: location.lat(),
     longitude: location.lng(),
@@ -61,7 +76,7 @@ fetch('https://us-central1-pwa-parking.cloudfunctions.net/addLocation',  {
         console.log('SyncManager NOT supported by your browser');
     }
 })
-  showMarker(location,id)
+  showMarker(location,id, currentUser.providerId)
 }
 
 function deleteMarker(marker, id){
@@ -128,7 +143,7 @@ function getMarkers(){
                 .then(locations => {
                     
                   locations.forEach(l => {
-                    showMarker(new google.maps.LatLng({lat: l.latitude, lng: l.longitude}),l.id)
+                    showMarker(new google.maps.LatLng({lat: l.latitude, lng: l.longitude}),l.id,l.userId)
                   });
                 });
         })

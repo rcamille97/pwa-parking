@@ -1,5 +1,5 @@
 console.log('hello depuis main');
-const locationsDiv = document.querySelector('#locations');
+//const locationsDiv = document.querySelector('#locations');
 
 /*function loadLocations(locations) {
     fetch('https://us-central1-pwa-parking.cloudfunctions.net/getLocations')
