@@ -23,7 +23,7 @@
         <link rel="manifest" href="/manifest.json">
         <script src="lib/jquery-3.4.1.min.js"></script>
         <script src="lib/bootstrap/js/bootstrap.min.js"></script>
-        <!-- <link rel="stylesheet" href="vendors/bootstrap4.min.css">-->
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
         <!-- <link href="style.css" rel="stylesheet">-->
         <style>
             /* Always set the map height explicitly to define the size of the div
@@ -41,10 +41,29 @@
           
       </head>    
       <body id="page-top">
-            <div class="row">
+        <!-- Image and text -->
+        <div class="pos-f-t">
+            <div class="collapse" id="navbarToggleExternalContent">
+              <div class="bg-dark p-4">
+                <h5 class="text-white h4">Où trouver des places à Corte?</h5>
+                <span class="text-muted">Chez Marcucu, à vanino, chez titi</span>
+              </div>
+            </div>
+            <nav class="navbar navbar-dark bg-dark">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <h4 class="text-white">
+                      <img src="http://www.pngmart.com/files/10/Parking-Symbol-PNG-File.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                      cloudou parking team project
+                  </h4>
+              </button>
+              
+            </nav>
+          </div>
+        
+            <!--<div class="row">
               <div class="col"><a href="index.html">accueil</a></div>
               <div class="col"><a href="add_place.html">Ajouter place de parking</a></div>
-            </div>
+            </div>-->
               <div id="map"></div>
 
               <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
@@ -53,9 +72,9 @@
               <script src="map.js"></script>
               
            <!--  </div> -->
-        <h1>Accueil</h1>
+        <!--<h1>Accueil</h1>
         <h2>Mes places de parking</h2>
-        <div id="locations"></div>
+        <div id="locations"></div>-->
         <script type="text/javascript" src="mains.js"></script>
         <script type="text/javascript" src="key.js"></script>
         </body>
