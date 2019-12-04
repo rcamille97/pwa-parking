@@ -1,7 +1,32 @@
 var map;
 var markers = [];
+var firebaseConfig = {
+  apiKey: "AIzaSyDKLoSf1KtAZ9Xc_j6hWtAtVmHRIDg0AvY",
+  authDomain: "pwa-parking.firebaseapp.com",
+  databaseURL: "https://pwa-parking.firebaseio.com",
+  projectId: "pwa-parking",
+  storageBucket: "pwa-parking.appspot.com",
+  messagingSenderId: "40154814758",
+  appId: "1:40154814758:web:37e0ee7d1046693d1d09e7"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var currentUser ;
 
-var currentUser = firebase.auth().currentUser;
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    console.log(user)
+    currentUser=user
+    // User is signed in.
+    var displayName = user.displayName;
+    var email = user.email;
+    var emailVerified = user.emailVerified;
+    var photoURL = user.photoURL;
+    var isAnonymous = user.isAnonymous;
+    var uid = user.uid;
+    var providerData = user.providerData;
+  }
+});
 //get current user
 
 function initMap() {
@@ -149,3 +174,4 @@ function getMarkers(){
         })
         .catch(console.error);
 }
+
