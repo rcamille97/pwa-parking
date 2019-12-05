@@ -1,16 +1,5 @@
 var map;
 var markers = [];
-var firebaseConfig = {
-  apiKey: "AIzaSyDKLoSf1KtAZ9Xc_j6hWtAtVmHRIDg0AvY",
-  authDomain: "pwa-parking.firebaseapp.com",
-  databaseURL: "https://pwa-parking.firebaseio.com",
-  projectId: "pwa-parking",
-  storageBucket: "pwa-parking.appspot.com",
-  messagingSenderId: "40154814758",
-  appId: "1:40154814758:web:37e0ee7d1046693d1d09e7"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
 var currentUser
 
 var index
@@ -31,12 +20,16 @@ function initMap() {
   });
   // This event listener will call addMarker() when the map is clicked.
   map.addListener('click', function(event) {
-    addMarker(event.latLng, Date.now());
+    if (currentUser === undefined) {
+      console.log("please wait user defined")
+    }else {
+      addMarker(event.latLng, Date.now());
+    }
   });
   showMarkers()
 }
 
-function showMarker(location,id, user){
+function showMarker(location, id, object){
   var date = new Date(parseInt(id))
   console.log(date)
   if(date.getMinutes() < 10){
@@ -44,31 +37,40 @@ function showMarker(location,id, user){
   }else{
     minutes = date.getMinutes()
   }
-  var infowindow = new google.maps.InfoWindow({
-    content: user.userName + " s'est garé ici à " + date.getHours() + "h" + minutes
-  });
   var marker = new google.maps.Marker({
     position: location,
     icon: 'images/multiplo.png',
     map: map
   });
-  markers.push({"marker" : marker, "id" : id});
+  markers.push(id = {"marker" : marker, "id" : id});
 
-  marker.addListener('click', function(event) {
-    userId = currentUser.uid;
-    if ((userId != user.userId) && user.userId){
-      infowindow.open(map, marker);
-      console.log(userId)
-      console.log(user.userId)
-    }else{
-          deleteMarker(marker,id)
-      }
-  });
+  addMarkerListener(marker, id, object);
+
   index = index + 1
   updateUI()
-  
-  
+  return marker;
 }
+
+function addMarkerListener(marker, dbId, object) {
+  var date = new Date(parseInt(object.id))
+  var infowindow = new google.maps.InfoWindow({
+    content: object.userName + " s'est garé ici à " + date.getHours() + "h" + minutes
+  });
+  marker.addListener('click', function(event) {
+    userId = currentUser.uid;
+    if ((userId != object.userId) && object.userId){
+      infowindow.open(map, marker);
+      console.log(userId);
+    }else{
+          deleteMarker(marker, object.id);
+      }
+  });
+}
+
+function addDBMarker(location, id) {
+  addMarker(location, id);
+}
+
 // Adds a marker to the map and push to the array.
 function addMarker(location,id) {
   
@@ -105,7 +107,7 @@ fetch('https://us-central1-pwa-parking.cloudfunctions.net/addLocation',  {
         console.log('SyncManager NOT supported by your browser');
     }
 })
-  showMarker(location,id, currentUser.providerId)
+  return showMarker(location, id, currentUser.providerId)
 }
 
 function deleteMarker(marker, id){
@@ -181,7 +183,7 @@ function getMarkers(){
                 .then(locations => {
                     
                   locations.forEach(l => {
-                    showMarker(new google.maps.LatLng({lat: l.latitude, lng: l.longitude}),l.id,l)
+                    showMarker(new google.maps.LatLng({lat: l.latitude, lng: l.longitude}),l.id, l)
                   });
                 });
         })
