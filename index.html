@@ -30,7 +30,7 @@
             /* Always set the map height explicitly to define the size of the div
              * element that contains the map. */
             #map {
-              height: 100%;
+              height: 89%;
             }
             /* Optional: Makes the sample page fill the window. */
             html, body {
@@ -49,20 +49,24 @@
               <span class="text-muted">Chez Marcucu, à vanino, chez titi</span>
             </div>
           </div>
-          <nav class="navbar navbar-dark bg-dark">
+          <nav class="navbar navbar-dark bg-primary">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                <h4 class="text-white">
-                    <img src="http://www.pngmart.com/files/10/Parking-Symbol-PNG-File.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                    cloudou parking team project
-                </h4>
+              <img src="http://www.pngmart.com/files/10/Parking-Symbol-PNG-File.png" width="30" height="30" class="d-inline-block align-top" alt="">  
             </button>
-            <button id="signout">Se déconnecter</button>
+            <button id="signout" class="btn btn-light">Se déconnecter</button>
+            
             
           </nav>
         </div>
-              <div id="map"></div>
+        <div id="map"></div>
 
+        <footer class="footer">
+            <nav class="navbar navbar-dark bg-primary">
+                <div id= "footerInfo" class="text-white"></div>
+            </nav>
+        </footer>
         </body>
+        
 
         <script type="text/javascript" src="mains.js"></script>
         <script type="text/javascript" src="key.js"></script>

@@ -17,6 +17,9 @@ self.addEventListener('install', (evt) => {
             'add_place.js',
             'contact.html',
             'contact.js',
+            'login.js',
+            'signout.js',
+            'authLogin.html'
         ])
         .then(console.log('cache initialisé'))
         .catch(console.err);
@@ -107,10 +110,7 @@ self.addEventListener('fetch', (evt) => {
                 fetch('https://us-central1-pwa-parking.cloudfunctions.net/addLocation', {
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                         /*'Access-Control-Allow-Origin':'*',
-              'Access-Control-Allow-Methods': "POST",
-              'Access-Control-Allow-Headers': "X-Request-With, content-type"*/
+                        'Content-Type': 'application/json'
                     },
                     method: 'POST',
                     body: JSON.stringify(location)

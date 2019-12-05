@@ -11,67 +11,71 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-var currentUser ;
+var currentUser
 
+var index
+
+//get current user
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    console.log(user)
-    currentUser=user
-    // User is signed in.
-    var displayName = user.displayName;
-    var email = user.email;
-    var emailVerified = user.emailVerified;
-    var photoURL = user.photoURL;
-    var isAnonymous = user.isAnonymous;
-    var uid = user.uid;
-    var providerData = user.providerData;
+    currentUser = user
   }
 });
-//get current user
+
 
 function initMap() {
-
   map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 42.298326, lng: 9.153767},
       zoom: 20,
       disableDefaultUI: true
   });
-
   // This event listener will call addMarker() when the map is clicked.
   map.addListener('click', function(event) {
     addMarker(event.latLng, Date.now());
   });
-  console.log(currentUser)
   showMarkers()
 }
 
 function showMarker(location,id, user){
+  var date = new Date(parseInt(id))
+  console.log(date)
+  if(date.getMinutes() < 10){
+    minutes = "0" + date.getMinutes()
+  }else{
+    minutes = date.getMinutes()
+  }
   var infowindow = new google.maps.InfoWindow({
-    content: user + " s'est garé ici à " + id
+    content: user.userName + " s'est garé ici à " + date.getHours() + "h" + minutes
   });
   var marker = new google.maps.Marker({
     position: location,
     icon: 'images/multiplo.png',
     map: map
   });
+  markers.push({"marker" : marker, "id" : id});
+
   marker.addListener('click', function(event) {
-    if (currentUser != null) {
-      userId = currentUser.providerId;
-      if (userId != user){
-        infowindow.open(map, marker);
-      }else{
-        deleteMarker(marker)
+    userId = currentUser.uid;
+    if ((userId != user.userId) && user.userId){
+      infowindow.open(map, marker);
+      console.log(userId)
+      console.log(user.userId)
+    }else{
+          deleteMarker(marker,id)
       }
-    }
   });
-  markers.push({"marker" : marker, "id" : id, "userId" : user});
+  index = index + 1
+  updateUI()
+  
+  
 }
 // Adds a marker to the map and push to the array.
 function addMarker(location,id) {
+  
   const payload = {
     id: parseInt(id),
-    userId : currentUser.providerId,
-    userName: "test",
+    userId : currentUser.uid,
+    userName: currentUser.email,
     latitude: location.lat(),
     longitude: location.lng(),
     time : parseInt(id)
@@ -136,7 +140,10 @@ function deleteMarker(marker, id){
         }
     })
     .catch(error => console.error(error));
+
+    index = index - 1
     marker.setMap(null)
+   updateUI()
 }
 
 
@@ -145,6 +152,7 @@ function setMapOnAll(map) {
   for (var i = 0; i < markers.length; i++) {
     markers[i]["marker"].setMap(map);
   }
+  
 }
 // Removes the markers from the map, but keeps them in the array.
 function clearMarkers() {
@@ -153,10 +161,15 @@ function clearMarkers() {
 // Shows any markers currently in the array.
 function showMarkers() {
   getMarkers()
+  index = markers.length
   setMapOnAll(map);
+  
 }
 // Deletes all markers in the array by removing references to them.
 function deleteMarkers() {
+  markers.forEach(marker => {
+      deleteMarker(marker["marker"],marker['id'])
+  });
   clearMarkers();
   markers = [];
 }
@@ -168,10 +181,20 @@ function getMarkers(){
                 .then(locations => {
                     
                   locations.forEach(l => {
-                    showMarker(new google.maps.LatLng({lat: l.latitude, lng: l.longitude}),l.id,l.userId)
+                    showMarker(new google.maps.LatLng({lat: l.latitude, lng: l.longitude}),l.id,l)
                   });
                 });
         })
         .catch(console.error);
 }
+
+function updateUI(){
+  const infoDiv = document.querySelector('#footerInfo');
+  var placesRestantes = 150 - index
+  if (placesRestantes >1 )
+    infoDiv.innerHTML = "Nombre de place occupées: " + index + ". Il reste " + placesRestantes + " places.";
+  else 
+    infoDiv.innerHTML = "Nombre de place occupées: " + index + ". Il reste " + placesRestantes + " place.";
+}
+
 
