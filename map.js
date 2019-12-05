@@ -67,10 +67,6 @@ function addMarkerListener(marker, dbId, object) {
   });
 }
 
-function addDBMarker(location, id) {
-  addMarker(location, id);
-}
-
 // Adds a marker to the map and push to the array.
 function addMarker(location,id) {
   
@@ -107,7 +103,15 @@ fetch('https://us-central1-pwa-parking.cloudfunctions.net/addLocation',  {
         console.log('SyncManager NOT supported by your browser');
     }
 })
-  return showMarker(location, id, currentUser.providerId)
+  object = new Object();
+  object.id = parseInt(id);
+  object.userId = currentUser.uid;
+  object.userName = currentUser.email;
+  object.latitude = location.lat();
+  object.longitude = location.lng();
+  object.time = parseInt(id);
+
+  return showMarker(location, id, object);
 }
 
 function deleteMarker(marker, id){
